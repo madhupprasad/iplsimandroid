@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/roomInfo">
+
+    <fragment
+        android:id="@+id/roomInfo"
+        android:name="com.example.viewmodeldemo.RoomInfo"
+        android:label="fragment_room_info"
+        tools:layout="@layout/fragment_room_info" >
+        <action
+            android:id="@+id/action_roomInfo_to_createRoomCred"
+            app:destination="@id/createRoomCred" />
+        <action
+            android:id="@+id/action_roomInfo_to_joinRoomCred"
+            app:destination="@id/joinRoomCred" />
+    </fragment>
+    <fragment
+        android:id="@+id/createRoomCred"
+        android:name="com.example.viewmodeldemo.CreateRoomCred"
+        android:label="fragment_create_room_cred"
+        tools:layout="@layout/fragment_create_room_cred" >
+        <action
+            android:id="@+id/action_createRoomCred_to_waitScreen"
+            app:destination="@id/waitScreen" />
+        <action
+            android:id="@+id/action_createRoomCred_to_roomInfo"
+            app:destination="@id/roomInfo"
+            app:popUpTo="@id/roomInfo"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/waitScreen"
+        android:name="com.example.viewmodeldemo.WaitScreen"
+        android:label="fragment_wait_screen"
+        tools:layout="@layout/fragment_wait_screen" >
+        <action
+            android:id="@+id/action_waitScreen_to_roomInfo"
+            app:destination="@id/roomInfo"
+            app:popUpTo="@id/roomInfo"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_waitScreen_to_gameRoom"
+            app:destination="@id/gameRoom" />
+    </fragment>
+    <fragment
+        android:id="@+id/joinRoomCred"
+        android:name="com.example.viewmodeldemo.JoinRoomCred"
+        android:label="fragment_join_room_cred"
+        tools:layout="@layout/fragment_join_room_cred" >
+        <action
+            android:id="@+id/action_joinRoomCred_to_waitScreen"
+            app:destination="@id/waitScreen" />
+        <action
+            android:id="@+id/action_joinRoomCred_to_roomInfo"
+            app:destination="@id/roomInfo"
+            app:popUpTo="@id/roomInfo"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameRoom"
+        android:name="com.example.viewmodeldemo.GameRoom"
+        android:label="fragment_game_room"
+        tools:layout="@layout/fragment_game_room" />
+</navigation>
