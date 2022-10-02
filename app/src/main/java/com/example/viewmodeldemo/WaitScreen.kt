@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.example.viewmodeldemo.databinding.FragmentWaitScreenBinding
 import com.google.gson.Gson
@@ -26,15 +28,15 @@ class WaitScreen : Fragment() {
                 val mSocket = SocketHandler.getSocket()
                 val rid = requireArguments().getString("room_id")
                 val pid = requireArguments().getString("player_id")
-
                 var gson = Gson()
                 var data = object {
                     val roomId : String? = rid
                     val playerId : String? = pid
                 }
                 var jsonString = gson.toJson(data)
-
                 mSocket.emit("end", jsonString)
+
+                findNavController().navigate(R.id.action_waitScreen_to_roomInfo)
             }
         })
     }
@@ -46,40 +48,26 @@ class WaitScreen : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentWaitScreenBinding.inflate(inflater, container, false)
 
-        val mSocket = SocketHandler.getSocket()
-
         roomId = requireArguments().getString("room_id")
 
+        val mSocket = SocketHandler.getSocket()
+
+        Toast.makeText(activity, "lalalalalal", Toast.LENGTH_SHORT).show()
+
         mSocket.emit("get_joined_players", roomId)
+        mSocket.emit("all_joined", roomId)
 
         mSocket.on("all_joined"){
             args -> if(args[0] != null){
+                Log.i("TEST", "lol")
             activity?.runOnUiThread {
                 if(args[0] == true){
-                    findNavController().navigate(R.id.action_waitScreen_to_gameRoom)
+                    val pid = requireArguments().getString("player_id")
+                    val id = bundleOf("room_id" to roomId, "player_id" to pid)
+                    mSocket.emit("stop_timer")
+                    findNavController().navigate(R.id.action_waitScreen_to_gameRoom, id)
                 }
             }
-            }
-        }
-
-        mSocket.on("exit") { args ->
-            if (args[0] != null) {
-                val pid = requireArguments().getString("player_id")
-                if(args[0] == pid){
-                    activity?.runOnUiThread {
-                        findNavController().navigate(R.id.action_waitScreen_to_roomInfo)
-                    }
-                }
-            }else{
-                activity?.runOnUiThread {
-                    findNavController().navigate(R.id.action_waitScreen_to_roomInfo)
-                }
-            }
-        }
-
-        mSocket.on("refresh_players"){
-            args -> if(args[0]!=null && args[0]==true){
-                mSocket.emit("get_joined_players", roomId)
             }
         }
 

@@ -16,6 +16,7 @@ import org.json.JSONObject
 
 class JoinRoomCred : Fragment() {
     private lateinit var binding: FragmentJoinRoomCredBinding
+    private var mutex = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,7 +33,10 @@ class JoinRoomCred : Fragment() {
             args -> if(args[0]!=null){
                 activity?.runOnUiThread {
                     val id = bundleOf("room_id" to binding.etRoomId.text.toString(), "player_id" to args[0] as String)
-                    findNavController().navigate(R.id.action_joinRoomCred_to_waitScreen, id)
+                    if(mutex){
+                        mutex = false
+                        findNavController().navigate(R.id.action_joinRoomCred_to_waitScreen, id)
+                    }
                 }
             }
         }

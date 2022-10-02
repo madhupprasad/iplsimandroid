@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -44,8 +45,6 @@ dependencies {
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.2'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.2'
     testImplementation 'junit:junit:4.13.2'
@@ -53,4 +52,16 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation "androidx.activity:activity:1.6.0-alpha05"
 
+
+    def latest_version = "2.9.0"
+    def coroutines_dependency = "1.6.4"
+    def lifecycle_version = "2.5.1"
+    implementation "com.squareup.retrofit2:retrofit:$latest_version"
+    implementation "com.squareup.retrofit2:converter-gson:$latest_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_dependency"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_dependency"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.10.0"
 }

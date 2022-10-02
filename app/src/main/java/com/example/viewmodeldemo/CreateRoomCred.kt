@@ -1,20 +1,28 @@
 package com.example.viewmodeldemo
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.liveData
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.viewmodeldemo.databinding.FragmentCreateRoomCredBinding
 import com.google.gson.Gson
+import retrofit2.Response
 
 class CreateRoomCred : Fragment() {
 
     private lateinit var binding : FragmentCreateRoomCredBinding
     private var roomid : String = "init"
+    private var mutex = true
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,6 +30,21 @@ class CreateRoomCred : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentCreateRoomCredBinding.inflate(inflater, container, false)
+
+//        val retService = RetrofitInstance.getRetrofitInstance().create(CreateRoomService::class.java)
+//
+//        val createRoomResponse : LiveData<Response<String>> = liveData {
+//            Log.i("okok", title)
+//            val res = retService.createRoom(CreateRoomData("Madhu", "2"))
+//            emit(res)
+//        }
+//
+//        createRoomResponse.observe(viewLifecycleOwner, Observer {
+//            val title = it.body() as String?
+//            if (title != null) {
+//                Log.i("okok", title)
+//            }
+//        })
 
         SocketHandler.setSocket()
         val mSocket = SocketHandler.getSocket()
@@ -33,7 +56,10 @@ class CreateRoomCred : Fragment() {
                     roomid = args[0] as String
                     val playerId  = args[1] as String
                     val bundle = bundleOf("room_id" to roomid, "player_id" to playerId)
-                    findNavController().navigate(R.id.action_createRoomCred_to_waitScreen, bundle)
+                    if(mutex){
+                        mutex  = false
+                        findNavController().navigate(R.id.action_createRoomCred_to_waitScreen, bundle)
+                    }
                 }
             }
         }

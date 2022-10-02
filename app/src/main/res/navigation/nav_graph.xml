@@ -63,5 +63,9 @@
         android:id="@+id/gameRoom"
         android:name="com.example.viewmodeldemo.GameRoom"
         android:label="fragment_game_room"
-        tools:layout="@layout/fragment_game_room" />
+        tools:layout="@layout/fragment_game_room" >
+        <action
+            android:id="@+id/action_gameRoom_to_roomInfo2"
+            app:destination="@id/roomInfo" />
+    </fragment>
 </navigation>

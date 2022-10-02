@@ -5,7 +5,7 @@
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_create_room_cred.xml" value="0.24322916666666666" />
-        <entry key="app/src/main/res/layout/fragment_game_room.xml" value="0.3713768115942029" />
+        <entry key="app/src/main/res/layout/fragment_game_room.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_join_room_cred.xml" value="0.20108695652173914" />
         <entry key="app/src/main/res/layout/fragment_room_info.xml" value="0.24322916666666666" />
         <entry key="app/src/main/res/layout/fragment_wait_screen.xml" value="0.24322916666666666" />
