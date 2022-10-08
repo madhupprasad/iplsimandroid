@@ -6,7 +6,7 @@ import retrofit2.http.POST
 
 interface CreateRoomService {
 
-    @POST("/test/createroom")
+    @POST("/api/get_info")
     suspend fun createRoom(@Body createRoomData : CreateRoomData): Response<CreateRoomResponse>
 
 }

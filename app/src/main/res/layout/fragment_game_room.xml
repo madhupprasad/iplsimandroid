@@ -8,16 +8,33 @@
     tools:context=".GameRoom">
 
     <TextView
+        android:id="@+id/tvBalance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Balance"
+        android:textColor="#4CAF50"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.547"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.025" />
+
+    <TextView
         android:id="@+id/tvCricketerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
+        android:textColor="#010002"
+        android:textSize="34sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.113" />
+        app:layout_constraintVertical_bias="0.167" />
 
     <TextView
         android:id="@+id/tvBaseBid"
@@ -25,42 +42,49 @@
         android:layout_height="wrap_content"
         android:text="Base Pay"
         android:textSize="20sp"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.21" />
-
-    <TextView
-        android:id="@+id/tvHighestBid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="HighestBid"
-        android:textSize="34sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.301" />
+        app:layout_constraintVertical_bias="0.313" />
 
     <TextView
         android:id="@+id/tvHighestBidder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="HighestBidder"
+        android:textColor="#FFC107"
+        android:textColorHighlight="#FFC107"
         android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.458" />
+
+    <TextView
+        android:id="@+id/tvHighestBid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HighestBid"
+        android:textColor="#348337"
+        android:textSize="30sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.37" />
+        app:layout_constraintVertical_bias="0.4" />
 
     <Button
         android:id="@+id/btnBid"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
+        android:layout_width="191dp"
+        android:layout_height="67dp"
+        android:backgroundTint="#3F51B5"
         android:text="Bid"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -68,30 +92,51 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.565" />
+        app:layout_constraintVertical_bias="0.67" />
 
     <TextView
-        android:id="@+id/tvBalance"
+        android:id="@+id/tvCrystal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Balance"
+        android:text="Crystal"
+        android:textColor="#8CDA8F"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tvBalance"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.698" />
+        app:layout_constraintVertical_bias="0.063" />
 
     <TextView
         android:id="@+id/tvTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Timer"
+        android:textColor="#7E7070"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.923"
+        app:layout_constraintHorizontal_bias="0.932"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.04" />
+        app:layout_constraintVertical_bias="0.037" />
+
+    <Button
+        android:id="@+id/btnInfo"
+        android:layout_width="78dp"
+        android:layout_height="49dp"
+        android:backgroundTint="#3F51B5"
+        android:inputType="textCapSentences"
+        android:text="info"
+        android:textAlignment="center"
+        android:textColor="#FDFDFD"
+        android:textStyle="bold"
+        app:cornerRadius="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.048"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.021"
+        app:strokeColor="#FFFFFF" />
 </androidx.constraintlayout.widget.ConstraintLayout>

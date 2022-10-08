@@ -52,8 +52,6 @@ class WaitScreen : Fragment() {
 
         val mSocket = SocketHandler.getSocket()
 
-        Toast.makeText(activity, "lalalalalal", Toast.LENGTH_SHORT).show()
-
         mSocket.emit("get_joined_players", roomId)
         mSocket.emit("all_joined", roomId)
 

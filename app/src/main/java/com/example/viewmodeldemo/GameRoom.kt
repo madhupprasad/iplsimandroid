@@ -1,22 +1,35 @@
 package com.example.viewmodeldemo
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.liveData
 import androidx.navigation.fragment.findNavController
 import com.example.viewmodeldemo.databinding.FragmentGameRoomBinding
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import org.json.JSONObject
+import retrofit2.Response
 
 
 class GameRoom : Fragment() {
     private lateinit var binding : FragmentGameRoomBinding
     private var bidAmount : Int = 5
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
@@ -59,17 +72,17 @@ class GameRoom : Fragment() {
         mSocket.on("balance_update"){
             args -> if(args[0] != null){
                 activity?.runOnUiThread {
-                    binding.tvBalance.text = args[0].toString()
+                    binding.tvBalance.text = "$${args[0].toString()}"
                 }
             }
         }
 
-        mSocket.on("after_bid"){
+        mSocket.on("on_bid"){
             args -> if(args[0]!=null){
                 val data = args[0] as JSONObject
             activity?.runOnUiThread {
-                binding.tvHighestBid.text = "Current Bid ${data.get("highestBid").toString()}"
-                binding.tvHighestBidder.text = "By ${ data.get("playerName").toString() }"
+                binding.tvHighestBid.text = "$${data.get("highestBid").toString()}"
+                binding.tvHighestBidder.text = "${ data.get("playerName").toString() }"
             }
         }
         }
@@ -78,8 +91,10 @@ class GameRoom : Fragment() {
             args -> if(args[0] != null){
                 val cricketer = args[0] as JSONObject
                 activity?.runOnUiThread {
+                    binding.tvHighestBid.text = "Waiting ..."
+                    binding.tvHighestBidder.text = "Waiting ..."
                     binding.tvCricketerName.text = cricketer.get("player") as CharSequence?
-                    binding.tvBaseBid.text = "Base price : ${cricketer.get("base").toString()}"
+                    binding.tvBaseBid.text = "Base price : $${cricketer.get("base").toString()}"
                 }
             }
         }
@@ -87,13 +102,69 @@ class GameRoom : Fragment() {
         mSocket.on("timer"){
             args -> if(args[0] != null){
                 activity?.runOnUiThread {
-                    binding.tvTimer.text = args[0].toString()
+                    val time = args[0].toString()
+                    if(time.toInt() < 5){
+                        binding.tvTimer.setTextColor(Color.RED)
+                    }else{
+                        binding.tvTimer.setTextColor(Color.GRAY)
+                    }
+                    binding.tvTimer.text = time
                 }
             }
         }
 
+        mSocket.on("sold"){
+            activity?.runOnUiThread {
+                val pName = it[0].toString()
+                Toast.makeText(context, "Sold to $pName", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         mSocket.on("timeout"){
-            mSocket.emit("next_player", gson.toJson(data))
+            mSocket.emit("transaction_end", gson.toJson(data))
+        }
+
+        mSocket.on("unsold"){
+            activity?.runOnUiThread {
+                Toast.makeText(context, "Unsold", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        mSocket.on("crystal"){
+            activity?.runOnUiThread {
+                binding.tvCrystal.text = "$${it[0].toString()}"
+            }
+        }
+
+        mSocket.on("out_of_balance"){
+            activity?.runOnUiThread {
+                Toast.makeText(context, "Out of balance!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+        val retService = RetrofitInstance.getRetrofitInstance().create(CreateRoomService::class.java)
+
+
+        binding.btnInfo.setOnClickListener {
+            val dialogBinding = layoutInflater.inflate(R.layout.my_custom_dialog, null)
+            val myDialog = Dialog(requireContext())
+            myDialog.setContentView(dialogBinding)
+            myDialog.setCancelable(true)
+            myDialog.window?.setBackgroundDrawable(ColorDrawable(Color.GRAY))
+
+            val createRoomResponse : LiveData<Response<CreateRoomResponse>> = liveData {
+                if(rid != null){
+                    val res = retService.createRoom(CreateRoomData(roomId = rid))
+                    emit(res)
+                }
+            }
+            createRoomResponse.observe(viewLifecycleOwner, Observer {
+                val infoText = it.body()?.info
+                val info = dialogBinding.findViewById<TextView>(R.id.tvInfo)
+                info.text = infoText.toString()
+                myDialog.show()
+            })
         }
 
 
@@ -103,7 +174,7 @@ class GameRoom : Fragment() {
                 val playerId = pid
                 val amount = bidAmount
             }
-            mSocket.emit("after_bid", gson.toJson(data) )
+            mSocket.emit("on_bid", gson.toJson(data) )
         }
 
         return binding.root
