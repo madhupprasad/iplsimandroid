@@ -23,7 +23,6 @@ class CreateRoomCred : Fragment() {
     private var roomid : String = "init"
     private var mutex = true
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,12 +65,21 @@ class CreateRoomCred : Fragment() {
 
         binding.btnCreateRoom.setOnClickListener {
             var gson = Gson()
-            var data = object {
-                val playerName = binding.etAdminName.text.toString()
-                val numberOfPlayers = binding.etNumber.text.toString()
+
+            val playerName = binding.etAdminName.text.toString().trim()
+            val numberOfPlayers = binding.etNumber.text.toString()
+
+            val nameOk = nameValidator(playerName, context)
+            val numOk = numValidator(numberOfPlayers, context)
+
+            if(numOk && nameOk){
+                var data = object {
+                    val playerName = playerName
+                    val numberOfPlayers = numberOfPlayers
+                }
+                var jsonString = gson.toJson(data)
+                mSocket.emit("create", jsonString)
             }
-            var jsonString = gson.toJson(data)
-            mSocket.emit("create", jsonString)
         }
 
         return binding.root

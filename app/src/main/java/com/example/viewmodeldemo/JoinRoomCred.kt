@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -41,14 +42,28 @@ class JoinRoomCred : Fragment() {
             }
         }
 
+        mSocket.on("no_room"){
+            activity?.runOnUiThread {
+                Toast.makeText(context, "No Room in that ID", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         binding.btnJoinRoom.setOnClickListener {
             var gson = Gson()
-            var data = object {
-                val roomId : String = binding.etRoomId.text.toString()
-                val playerName : String = binding.etJoinName.text.toString()
+
+            val roomId : String = binding.etRoomId.text.toString()
+            val playerName : String = binding.etJoinName.text.toString()
+
+            val nameOk = nameValidator(playerName, context)
+
+            if(nameOk) {
+                var data = object {
+                    val roomId: String = roomId
+                    val playerName: String = playerName
+                }
+                var jsonString = gson.toJson(data)
+                mSocket.emit("join", jsonString)
             }
-            var jsonString = gson.toJson(data)
-            mSocket.emit("join", jsonString)
         }
 
         return binding.root
