@@ -9,16 +9,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.liveData
+import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 import com.example.viewmodeldemo.databinding.FragmentGameRoomBinding
 import com.google.gson.Gson
+import com.squareup.picasso.NetworkPolicy
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
@@ -30,6 +31,7 @@ import retrofit2.Response
 class GameRoom : Fragment() {
     private lateinit var binding : FragmentGameRoomBinding
     private var bidAmount : Int = 5
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
@@ -56,6 +58,7 @@ class GameRoom : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentGameRoomBinding.inflate(inflater, container, false)
+
         val rid = requireArguments().getString("room_id")
         val pid = requireArguments().getString("player_id")
 
@@ -95,6 +98,10 @@ class GameRoom : Fragment() {
                     binding.tvHighestBidder.text = "Waiting ..."
                     binding.tvCricketerName.text = cricketer.get("player") as CharSequence?
                     binding.tvBaseBid.text = "Base price : $${cricketer.get("base").toString()}"
+                    val imgurl = cricketer.get("image").toString()
+                    Picasso.get().load(imgurl)
+                        .placeholder(R.drawable.avatar)
+                        .into(binding.imageview)
                 }
             }
         }
